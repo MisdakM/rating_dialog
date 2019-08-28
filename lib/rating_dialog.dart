@@ -9,14 +9,18 @@ class _RatingDialogState extends State<RatingDialog> {
     List<Widget> buttons = [];
 
     for (int rateValue = 1; rateValue <= 5; rateValue++) {
-      final starRatingButton = IconButton(
-          icon: Icon(_rating >= rateValue ? Icons.star : Icons.star_border,
-              color: widget.accentColor, size: 35),
-          onPressed: () {
-            setState(() {
-              _rating = rateValue;
-            });
-          });
+      final starRatingButton = Expanded(
+        child: IconButton(
+            icon: Icon(
+                _rating >= rateValue ? Icons.star : Icons.star_border,
+                color: widget.accentColor,
+                size: 35),
+            onPressed: () {
+              setState(() {
+                _rating = rateValue;
+              });
+            }),
+      );
       buttons.add(starRatingButton);
     }
 
@@ -45,6 +49,8 @@ class _RatingDialogState extends State<RatingDialog> {
             widget.description,
             textAlign: TextAlign.center,
           ),
+          // The following Row widget used to contain a list of fixed size IconButtons
+          // Possible fix is to wrap each of the IconButton widgets with an Expanded widget in order to match the Row's width 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: _buildStarRatingButtons(),
@@ -80,8 +86,7 @@ class _RatingDialogState extends State<RatingDialog> {
                   ),
                 ),
                 Visibility(
-                  visible:
-                      _rating <= 3 && widget.alternativeButton.isNotEmpty,
+                  visible: _rating <= 3 && widget.alternativeButton.isNotEmpty,
                   child: FlatButton(
                     child: Text(
                       widget.alternativeButton,
